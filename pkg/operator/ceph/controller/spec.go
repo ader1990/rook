@@ -286,7 +286,8 @@ func DaemonVolumesDataHostPath(dataPaths *config.DataPathMap) []v1.Volume {
 	src := v1.VolumeSource{EmptyDir: &v1.EmptyDirVolumeSource{}}
 	if dataPaths.HostDataDir != "" {
 		// data is persisted to host
-		src = v1.VolumeSource{HostPath: &v1.HostPathVolumeSource{Path: dataPaths.HostDataDir}}
+		hostPathType := v1.HostPathDirectoryOrCreate
+		src = v1.VolumeSource{HostPath: &v1.HostPathVolumeSource{Path: dataPaths.HostDataDir, Type: &hostPathType}}
 	}
 	return append(vols, v1.Volume{Name: "ceph-daemon-data", VolumeSource: src})
 }
